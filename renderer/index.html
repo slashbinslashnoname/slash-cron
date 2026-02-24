@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+  <link rel="stylesheet" href="style.css">
+  <title>Slash Cron</title>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1>Slash Cron</h1>
+      <span class="subtitle">Cron Job Manager</span>
+    </div>
+    <div class="header-actions">
+      <button id="btn-refresh" class="btn secondary" title="Reload crontab">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.65 2.35A7.96 7.96 0 0 0 8 0C3.58 0 .01 3.58.01 8S3.58 16 8 16c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 8 14 6 6 0 1 1 8 2c1.66 0 3.14.69 4.22 1.78L9 7h7V0l-2.35 2.35z" fill="currentColor"/></svg>
+        Refresh
+      </button>
+      <button id="btn-add" class="btn primary">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        New Job
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div id="env-section" class="hidden">
+      <div class="section-header" id="env-toggle">
+        <svg class="chevron" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Environment Variables</span>
+      </div>
+      <div id="env-list" class="collapsed"></div>
+    </div>
+
+    <div id="job-list"></div>
+
+    <div id="empty-state" class="hidden">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/></svg>
+      <p>No cron jobs found</p>
+      <p class="hint">Click "New Job" to create one</p>
+    </div>
+  </main>
+
+  <div id="modal-overlay" class="hidden">
+    <div id="modal">
+      <h2 id="modal-title">New Cron Job</h2>
+      <div class="form-group">
+        <label>Schedule</label>
+        <div class="schedule-inputs">
+          <div class="schedule-field">
+            <input id="f-minute" placeholder="*" spellcheck="false">
+            <span>Minute</span>
+          </div>
+          <div class="schedule-field">
+            <input id="f-hour" placeholder="*" spellcheck="false">
+            <span>Hour</span>
+          </div>
+          <div class="schedule-field">
+            <input id="f-dom" placeholder="*" spellcheck="false">
+            <span>Day</span>
+          </div>
+          <div class="schedule-field">
+            <input id="f-month" placeholder="*" spellcheck="false">
+            <span>Month</span>
+          </div>
+          <div class="schedule-field">
+            <input id="f-dow" placeholder="*" spellcheck="false">
+            <span>Weekday</span>
+          </div>
+        </div>
+        <p id="schedule-preview" class="hint"></p>
+        <div class="preset-row">
+          <button class="preset" data-schedule="* * * * *">Every min</button>
+          <button class="preset" data-schedule="0 * * * *">Hourly</button>
+          <button class="preset" data-schedule="0 0 * * *">Daily</button>
+          <button class="preset" data-schedule="0 0 * * 1">Weekly</button>
+          <button class="preset" data-schedule="0 0 1 * *">Monthly</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Command</label>
+        <textarea id="f-command" rows="3" placeholder="/path/to/script.sh --flag" spellcheck="false"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-cancel" class="btn secondary">Cancel</button>
+        <button id="btn-save" class="btn primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
